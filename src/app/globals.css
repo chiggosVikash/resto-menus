@@ -3,21 +3,52 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FFF8E1;
+  --foreground: #4A3933;
+  --primary: #D35400;
+  --secondary: #8D6E63;
+  --accent: #FFA000;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #2C2C2C;
+    --foreground: #F5E0C3;
+    --primary: #FF7043;
+    --secondary: #A1887F;
+    --accent: #FFB300;
   }
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--primary);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--background);
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent);
 }
 
 @layer utilities {

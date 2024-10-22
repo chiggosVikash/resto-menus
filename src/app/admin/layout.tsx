@@ -1,8 +1,8 @@
+
 import type { Metadata } from "next";
 import { Philosopher } from "next/font/google";
-import "./globals.css";
-import ClientNavbar from './Component/Navbar/ClientNavbar'
-
+import "../globals.css";
+import Navbar from "../Component/Navbar/Navbar";
 
 export const metadata: Metadata = {
   title: "Resto-Menus",
@@ -14,7 +14,7 @@ const philosopher = Philosopher({
   weight: ['400', '700'],
 });
 
-export default function AppLayout({
+export default function AdminLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -24,7 +24,7 @@ export default function AppLayout({
       <body
         className={`${philosopher.className} `}
       >
-        <ClientNavbar/>
+        <Navbar />
         {children}
       </body>
     </html>

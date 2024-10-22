@@ -1,3 +1,4 @@
+'use client';
 import React from 'react'
 import Container from '../Component/Container';
 import { FaBox, FaPlus, FaShoppingCart, FaUser } from 'react-icons/fa';
@@ -16,9 +17,9 @@ const menuItems: MenuItem[] = [
         href: '/admin/add-menus',
     },
     {
-        title: 'Orders',
+        title: 'Menus',
         icon: <FaShoppingCart />,
-        href: '/admin/orders',
+        href: '/admin/menus',
     },
     {
         title: 'Products',
@@ -33,10 +34,22 @@ const menuItems: MenuItem[] = [
     
 ];
 
+
 const AdminPage = () => {
   return (
     <div className='py-10'>
       <Container>
+        {/* <button
+         onClick={async ()=>{
+            try{
+                const response = await axios.post('/api/test/seed/menus',{numberOfMenus:100});
+                console.log(response,"in seed menus route");
+            }
+            catch(error){
+                console.log(error,"in seed menus route");
+            }
+         }}
+          >Seed Item</button> */}
           <div  className='grid grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-8 px-12'>
             {menuItems.map((item, index) => (
                 <div key={index} className='cursor-pointer flex items-center space-x-2 p-4 bg-cardColor rounded-lg'>

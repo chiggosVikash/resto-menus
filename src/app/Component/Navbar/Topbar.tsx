@@ -1,10 +1,11 @@
 import React from 'react'
 import { FaEnvelope, FaFacebookF, FaInstagram, FaLinkedinIn, FaMapMarkerAlt, FaPhoneAlt, FaTwitter, FaYoutube } from 'react-icons/fa'
 import Container from '../Container'
-const Topbar = () => {
+
+const Topbar = ({isScrolled}:{isScrolled:boolean}) => {
   return (
-    <div className='bg-primary'>
-      <Container className='py-2 flex justify-between items-center text-onPrimary text-sm'>
+    <div className={`bg-primary  transition-all duration-300 ${isScrolled ? 'opacity-0 -translate-y-full' : 'opacity-100'}`}>
+      <Container className='py-2 h-10 flex justify-between items-center text-onPrimary text-sm'>
         <div className="hidden lg:flex space-x-6">
               <span className="flex items-center space-x-1">
                 <FaMapMarkerAlt className="text-tertiary" />

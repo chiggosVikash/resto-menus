@@ -15,7 +15,6 @@ const config: Config = {
         surface:'#F5F5F5',
         onSurface:'#212121',
         onPrimary:'#e5d5d9'
-
       },
     },
   },

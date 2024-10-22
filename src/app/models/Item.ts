@@ -1,6 +1,6 @@
 import mongoose , {Schema , Document} from 'mongoose';
 
-export interface IAddMenus extends Document{
+export interface IItem extends Document{
     name: string;
     description: string;
     halfPrice: number;
@@ -10,10 +10,11 @@ export interface IAddMenus extends Document{
     section: string;
     createdAt: Date;
     updatedAt: Date;
+   
 
 }
 
-const AddMenusSchema: Schema<IAddMenus> = new Schema({
+const ItemSchema: Schema<IItem> = new Schema({
     name: {
         type: String,
         required: true,
@@ -40,11 +41,8 @@ const AddMenusSchema: Schema<IAddMenus> = new Schema({
         type: String,
         required: true,
     },
-
-    
-    
 },{timestamps: true})
 
-const AddMenus = mongoose.models.AddMenus || mongoose.model<IAddMenus>('AddMenus', AddMenusSchema);
+const ItemModel = mongoose.models.Item || mongoose.model<IItem>('Item', ItemSchema);
 
-export default AddMenus;
+export default ItemModel;

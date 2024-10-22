@@ -6,7 +6,7 @@ import Input from '../../Component/Input';
 import Select from '../../Component/Select';
 import Image from 'next/image';
 import { useAddMenuStore } from '@/app/stores/AddMenuStore';
-import { IAddMenus } from '@/app/models/AddMenus';
+import { IItem } from '@/app/models/Item';
 import LoadingDialog from '@/app/Component/dialog/LoadingDialog';
 import SuccessDialog from '@/app/Component/dialog/SuccessDialog';
 
@@ -74,7 +74,7 @@ const AddMenusPage = () => {
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit((data) =>{
              console.log(data);
-             saveMenu(data as IAddMenus);
+             saveMenu(data as IItem);
           })}>
             <LoadingDialog isOpen={isSaving} title="Saving Menu..."></LoadingDialog>
             <SuccessDialog open={isSaved} title="Success!" onClose={()=>{

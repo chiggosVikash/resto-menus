@@ -1,24 +1,20 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Philosopher } from "next/font/google";
 import "./globals.css";
+import ClientNavbar from './Component/Navbar/ClientNavbar'
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
 
 export const metadata: Metadata = {
   title: "Resto-Menus",
   description: "Resto-Menus - Menus for Restaurants",
 };
 
-export default function RootLayout({
+const philosopher = Philosopher({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+});
+
+export default function AppLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -26,8 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${philosopher.className} `}
       >
+        <ClientNavbar/>
         {children}
       </body>
     </html>

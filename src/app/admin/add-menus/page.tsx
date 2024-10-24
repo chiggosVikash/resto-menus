@@ -1,236 +1,205 @@
-"use client";
+'use client'
+import React from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import Container from '../../Component/Container';
+import Input from '../../Component/Input';
+import Select from '../../Component/Select';
+import Image from 'next/image';
+import { useAddMenuStore } from '@/app/stores/AddMenuStore';
+import { IItem } from '@/app/models/Item';
+import LoadingDialog from '@/app/Component/dialog/LoadingDialog';
+import SuccessDialog from '@/app/Component/dialog/SuccessDialog';
 
-import React, { useState, useRef } from 'react';
-
-export default function AddMenusPage() {
-  const [menuItem, setMenuItem] = useState({
-    name: '',
-    category: '',
-    section: '',
-    priceType: 'full',
-    fullPrice: '',
-    halfPrice: '',
-    description: '',
+const AddMenusPage = () => {
+  const methods = useForm<IItem>({
+    defaultValues: {
+      name: '',
+      category: '',
+      section: '',
+      fullPrice: 0,
+      halfPrice: 0,
+      description: '',
+    },
   });
-  const [images, setImages] = useState<File[]>([]);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setMenuItem({ ...menuItem, [name]: value });
-  };
+  const { saveMenu, isSaving, isSaved, reset } = useAddMenuStore();
+  const [selectedPortions, setSelectedPortions] = React.useState<string[]>([]);
+  const [selectedImage, setSelectedImage] = React.useState<string | null>(null);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setImages(Array.from(e.target.files));
+  // Static categories and sections
+  const categories = [
+    { value: 'appetizers', label: 'Appetizers' },
+    { value: 'main-courses', label: 'Main Courses' },
+    { value: 'desserts', label: 'Desserts' },
+    { value: 'drinks', label: 'Drinks' },
+  ];
+
+  const sections = [
+    { value: 'breakfast', label: 'Breakfast' },
+    { value: 'lunch', label: 'Lunch' },
+    { value: 'dinner', label: 'Dinner' },
+    { value: 'all-day', label: 'All Day' },
+  ];
+
+  const portionOptions = ['full', 'half', 'both'];
+
+  const handlePortionChange = (portion: string) => {
+    if (portion === 'both') {
+      setSelectedPortions(prev => 
+        prev.includes('both') ? [] : ['full', 'half', 'both']
+      );
+    } else {
+      setSelectedPortions(prev => {
+        const newPortions = prev.includes(portion)
+          ? prev.filter(p => p !== portion)
+          : [...prev, portion];
+        
+        if (newPortions.includes('full') && newPortions.includes('half')) {
+          return ['full', 'half', 'both'];
+        } else {
+          return newPortions.filter(p => p !== 'both');
+        }
+      });
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Add logic to save the menu item and images
-    console.log('Menu item submitted:', menuItem);
-    console.log('Images:', images);
+  const visiblePriceInputs = selectedPortions.includes('both') 
+    ? ['full', 'half'] 
+    : selectedPortions.filter(p => p !== 'both');
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setSelectedImage(imageUrl);
+    }
   };
 
   return (
-    <div className="container mx-auto p-4" style={{ background: 'var(--background)', color: 'var(--foreground)' }}>
-      <h1 className="text-2xl font-bold mb-4" style={{ color: 'var(--primary)' }}>Add Menu Item</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="name" className="block mb-1">Name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={menuItem.name}
-            onChange={handleInputChange}
-            className="w-full rounded px-2 py-1"
-            style={{ 
-              border: '1px solid var(--secondary)', 
-              background: 'var(--accent)', 
-              color: 'var(--foreground)',
-              opacity: 0.8
-            }}
-            required
-          />
-        </div>
+    <div className="bg-surface text-onSurface">
+      <Container>
+        <h1 className="text-3xl font-bold mb-6 text-primary">Add Menu Item</h1>
+        <FormProvider {...methods}>
+          <form onSubmit={methods.handleSubmit((data) =>{
+             console.log(data);
+             saveMenu(data);
+          })}>
+            <LoadingDialog isOpen={isSaving} title="Saving Menu..."></LoadingDialog>
+            <SuccessDialog open={isSaved} title="Success!" onClose={()=>{
+              reset();
+              methods.reset();
+            }} message="Menu has been saved successfully."></SuccessDialog>
+            
+            <div className="flex flex-col md:flex-row gap-6">
+              {/* Left section for image upload */}
+              <div className="w-full md:w-1/3">
+                <div className="mb-4">
+                  <label className="block mb-2 text-sm font-medium">Food Image</label>
+                  <div className="border-2 border-dashed border-secondary rounded-md p-4 text-center">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      id="image-upload"
+                      onChange={handleImageUpload}
+                    />
+                    {selectedImage ? (
+                      <div className="relative w-full aspect-square">
+                        <Image
+                          src={selectedImage}
+                          alt="Selected food image"
+                          layout="fill"
+                          objectFit="cover"
+                          className="rounded-md"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setSelectedImage(null)}
+                          className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                          </svg>
+                        </button>
+                      </div>
+                    ) : (
+                      <label htmlFor="image-upload" className="cursor-pointer text-secondary hover:text-primary">
+                        <div className="flex flex-col items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                          </svg>
+                          <span>Click to upload image</span>
+                        </div>
+                      </label>
+                    )}
+                  </div>
+                </div>
+              </div>
 
-        <div>
-          <label htmlFor="category" className="block mb-1">Category</label>
-          <select
-            id="category"
-            name="category"
-            value={menuItem.category}
-            onChange={handleInputChange}
-            className="w-full border rounded px-2 py-1"
-            required
-          >
-            <option value="">Select category</option>
-            <option value="veg">Vegetarian</option>
-            <option value="non-veg">Non-Vegetarian</option>
-          </select>
-        </div>
+              {/* Right section for menu details */}
+              <div className="w-full md:w-2/3">
+                <Input name="name" label="Item Name" rules={{ required: 'Item name is required' }} />
+                <div className="mb-4">
+                  <label className="block mb-2 text-sm font-medium">Category</label>
+                  <Select
+                    options={categories}
+                    name="category"
+                    placeholder="Select a category"
+                    rules={{ required: 'Category is required' }}
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block mb-2 text-sm font-medium">Section</label>
+                  <Select
+                    options={sections}
+                    name="section"
+                    placeholder="Select a section"
+                    rules={{ required: 'Section is required' }}
+                  />
+                </div>
 
-        <div>
-          <label htmlFor="section" className="block mb-1">Section</label>
-          <select
-            id="section"
-            name="section"
-            value={menuItem.section}
-            onChange={handleInputChange}
-            className="w-full border rounded px-2 py-1"
-            required
-          >
-            <option value="">Select section</option>
-            <option value="appetizers">Appetizers</option>
-            <option value="main-course">Main Course</option>
-            <option value="desserts">Desserts</option>
-            <option value="beverages">Beverages</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block mb-1">Price</label>
-          <div className="flex space-x-4">
-            <label>
-              <input
-                type="radio"
-                name="priceType"
-                value="full"
-                checked={menuItem.priceType === 'full'}
-                onChange={handleInputChange}
-              /> Full
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="priceType"
-                value="half"
-                checked={menuItem.priceType === 'half'}
-                onChange={handleInputChange}
-              /> Half
-            </label>
-          </div>
-        </div>
-
-        {menuItem.priceType === 'full' ? (
-          <div>
-            <label htmlFor="fullPrice" className="block mb-1">Full Price</label>
-            <input
-              type="number"
-              id="fullPrice"
-              name="fullPrice"
-              value={menuItem.fullPrice}
-              onChange={handleInputChange}
-              className="w-full rounded px-2 py-1"
-              style={{ 
-                border: '1px solid var(--secondary)', 
-                background: 'var(--accent)', 
-                color: 'var(--foreground)',
-                opacity: 0.8
-              }}
-              required
-            />
-          </div>
-        ) : (
-          <div className="flex space-x-4">
-            <div className="flex-1">
-              <label htmlFor="fullPrice" className="block mb-1">Full Price</label>
-              <input
-                type="number"
-                id="fullPrice"
-                name="fullPrice"
-                value={menuItem.fullPrice}
-                onChange={handleInputChange}
-                className="w-full rounded px-2 py-1"
-                style={{ 
-                  border: '1px solid var(--secondary)', 
-                  background: 'var(--accent)', 
-                  color: 'var(--foreground)',
-                  opacity: 0.8
-                }}
-                required
-              />
-            </div>
-            <div className="flex-1">
-              <label htmlFor="halfPrice" className="block mb-1">Half Price</label>
-              <input
-                type="number"
-                id="halfPrice"
-                name="halfPrice"
-                value={menuItem.halfPrice}
-                onChange={handleInputChange}
-                className="w-full rounded px-2 py-1"
-                style={{ 
-                  border: '1px solid var(--secondary)', 
-                  background: 'var(--accent)', 
-                  color: 'var(--foreground)',
-                  opacity: 0.8
-                }}
-                required
-              />
-            </div>
-          </div>
-        )}
-
-        <div>
-          <label htmlFor="description" className="block mb-1">Description</label>
-          <textarea
-            id="description"
-            name="description"
-            value={menuItem.description}
-            onChange={handleInputChange}
-            className="w-full border rounded px-2 py-1"
-            rows={3}
-          ></textarea>
-        </div>
-
-        <div>
-          <label htmlFor="images" className="block mb-1">Images (Optional)</label>
-          <input
-            type="file"
-            id="images"
-            name="images"
-            onChange={handleImageUpload}
-            accept="image/*"
-            multiple
-            className="hidden"
-            ref={fileInputRef}
-          />
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="px-4 py-2 rounded"
-            style={{ background: 'var(--secondary)', color: 'var(--background)' }}
-          >
-            Select Images
-          </button>
-          {images.length > 0 && (
-            <div className="mt-2">
-              <p>{images.length} image(s) selected</p>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {images.map((image, index) => (
-                  <img
-                    key={index}
-                    src={URL.createObjectURL(image)}
-                    alt={`Preview ${index + 1}`}
-                    className="w-20 h-20 object-cover rounded"
+                <div className="mb-4">
+                  <label className="block mb-2 text-sm font-medium">Portion Type</label>
+                  <div className="flex gap-4">
+                    {portionOptions.map(portion => (
+                      <label key={portion} className="inline-flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={selectedPortions.includes(portion)}
+                          onChange={() => handlePortionChange(portion)}
+                          className="form-checkbox text-primary"
+                        />
+                        <span className="ml-2 capitalize">{portion}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                
+                {visiblePriceInputs.map(portion => (
+                  <Input
+                    key={portion}
+                    name={`${portion}Price`}
+                    label={`${portion.charAt(0).toUpperCase() + portion.slice(1)} Price`}
+                    type="number"
+                    rules={{ required: `${portion} price is required` }}
                   />
                 ))}
+
+                <Input name="description" label="Description" rules={{ required: 'Description is required' }} />
+
+                <button
+                  type="submit"
+                  className="mt-4 bg-primary text-onPrimary px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors"
+                >
+                  Add Menu Item
+                </button>
               </div>
             </div>
-          )}
-        </div>
-
-        <button 
-          type="submit" 
-          className="px-4 py-2 rounded"
-          style={{ background: 'var(--primary)', color: 'var(--background)' }}
-        >
-          Add Menu Item
-        </button>
-      </form>
+          </form>
+        </FormProvider>
+      </Container>
     </div>
   );
-}
+};
+
+export default AddMenusPage;

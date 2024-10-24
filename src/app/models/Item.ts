@@ -1,6 +1,8 @@
 import mongoose , {Schema , Document} from 'mongoose';
+import { v4 as uuidv4 } from 'uuid'; // Import uuid
 
 export interface IItem extends Document{
+    itemId: string; // Change type from uuidv4 to string
     name: string;
     description: string;
     halfPrice: number;
@@ -15,6 +17,10 @@ export interface IItem extends Document{
 }
 
 const ItemSchema: Schema<IItem> = new Schema({
+    itemId:{
+        type: String,
+        default: uuidv4(), // Call uuidv4() to generate a new UUID
+    },
     name: {
         type: String,
         required: true,

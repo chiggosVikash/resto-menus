@@ -11,30 +11,22 @@ import MenusTable from '@/app/Component/MenusTable';
 import { usePageStore } from '@/app/stores/PageStore';
 
 const MenusPage = () => {
-  const {menus, getMenus, isFetching } = useMenusStore();
-  const {page} = usePageStore();
+  const { menus, getMenus, isFetching } = useMenusStore();
+  const { page } = usePageStore();
 
-  
   useEffect(() => {
-    const loadMenus = () => {
-      getMenus({ page: page, limit: 30 });
-    };
-    loadMenus();
-
-  }, [getMenus,page]);
+    getMenus({ page: page, limit: 30 });
+  }, [getMenus, page]);
 
   if (isFetching) {
-    return <LoadingDialog isOpen={true} title="Loading..." />
+    return <LoadingDialog isOpen={true} title="Loading..." />;
   }
 
-  
- 
   return (
     <div className="bg-surface text-onSurface min-h-screen">
       <Container>
         <PageHeader title="Menus" />
-        
-        {isFetching===false?(
+        {menus.length > 0 ? (
           <>
             <MenusSearchSection />
             <MenusTable menus={menus} />
@@ -44,9 +36,7 @@ const MenusPage = () => {
             <h1>No menus found</h1>
           </div>
         )}
-
-        {/* Add static pagination buttons */}
-        <Pagination />  
+        <Pagination />
       </Container>
     </div>
   );

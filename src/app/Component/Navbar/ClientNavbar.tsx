@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Logo from '../../assets/food-logo.png';
 import {  FaShoppingBag } from 'react-icons/fa';
 import { Merienda } from 'next/font/google';
+import { useRouter  } from 'next/navigation'
 
 const merienda = Merienda({
   subsets: ['latin'],
@@ -13,7 +14,7 @@ const merienda = Merienda({
 
 
 const ClientNavbar = () => {
-  // const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter()
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -37,22 +38,21 @@ const ClientNavbar = () => {
           <div className='flex flex-wrap justify-between items-center'>
             <div className='flex items-center'>
               <Image src={Logo} alt='logo' className='w-16 h-16 object-cover' />
-              <h1 className={`text-xl md:text-2xl font-extrabold ml-2 ${merienda.className} font-merienda`}>LadySticks and Cravings</h1>
+              <h1 className={`text-sm md:text-2xl font-extrabold ml-2 ${merienda.className} font-merienda`}>LadySticks and Cravings</h1>
             </div>
-            {/* <div className={`w-full md:w-auto md:flex items-center mt-4 md:mt-0 block`}> */}
-                <div className='bg-secondary text-onPrimary text-center px-2 py-1 rounded-full'>
-                  <FaShoppingBag className='inline text-lg mb-[2px]' />
-            {/* </div> */}
-            {/* <button onClick={() => setIsMenuOpen(!isMenuOpen)} className='text-2xl text-secondary mx-4'>
-                {isMenuOpen ? <FaTimes  /> : <FaBars />}
-              </button> */}
-              
+            <div
+              onClick={()=>{
+                router.push('/client/add-to-bag')
+              }} 
+              className='bg-secondary text-onPrimary text-center px-2 py-1 rounded-full'>
+              <FaShoppingBag 
+               className='inline text-lg mb-[2px]' />
             </div>
           </div>
         </Container>
       </nav>
       </div>
-      {isScrolled && <div className="h-[64px]" />} {/* Placeholder to prevent content jump */}
+      {isScrolled && <div className="md:h-[64px]" />} {/* Placeholder to prevent content jump */}
     </div>
   )
 }

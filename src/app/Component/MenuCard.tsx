@@ -5,10 +5,15 @@ import Image from 'next/image';
 import FoodImage from '../assets/food-image.jpg';
 import { FaChevronDown, FaChevronUp, FaStar } from 'react-icons/fa'; // Importing arrow and star icons
 import { IItem } from '../models/Item';
+import { useBucketStore } from "../stores/bucketStore";
+
+
 
 
 
 const MenuCard = ({menus: item}:{menus: IItem}) => {
+    const { addMenuToBucket } = useBucketStore();
+
     const [isExpanded, setIsExpanded] = useState(false);
     const toggleDescription = () => setIsExpanded(!isExpanded);
 
@@ -23,23 +28,30 @@ const MenuCard = ({menus: item}:{menus: IItem}) => {
             </p>
 
             <div className='flex justify-between items-center mt-4'>
-                <button className="bg-primary text-white py-2 px-4 rounded-lg shadow hover:bg-blue-600 transition duration-300">Add to Bag</button> {/* Add to Bag button */}
+                <button 
+                   onClick={()=>{
+                      addMenuToBucket(item)
+                   }}
+                    className="bg-primary text-white py-2 px-4 rounded-lg shadow hover:bg-secondary transition duration-300">Add to Bag</button> {/* Add to Bag button */}
                 <div className="flex items-center">
                     <span className="text-yellow-500 text-2xl">
                         <FaStar /> {/* Rating icon here */}
                     </span>
                 </div>
             </div>
-            <div className='flex justify-between items-center'>
-            <p className=" text-gray-500">{item.description.split('\n')[0]}</p>
-            <p onClick={toggleDescription} className="cursor-pointer text-blue-500 hover:underline">
+            <div className='md:flex hidden justify-between items-center'>
+                <div className='flex justify-between items-center'>
+                <p className=" text-gray-500">{item.description.split('\n')[0]}</p>
+                <p onClick={toggleDescription} className="cursor-pointer text-blue-500 hover:underline">
                 {isExpanded ? <FaChevronUp /> : <FaChevronDown />} {/* Arrow icon */}
-            </p>
+                </p>
            
-            </div>
+                </div>
              {isExpanded && (
                 <p className="mt-2 text-gray-700">{item.description}</p>
             )}
+            </div>
+            
         </div>
     );
 };

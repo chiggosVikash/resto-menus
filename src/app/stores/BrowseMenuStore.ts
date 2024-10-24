@@ -21,9 +21,9 @@ export const useBrowseMenuStore = create<BrowseMenuStore>((set)=>({
     browseMenus:[],
     errorMsg:"",
     getCategorizedMenu: async () =>{
-        
-        set({isFetching:true})
         try{
+            set({isFetching:true})
+
             const response = await axios.get("/api/menus/browse", {});
 
             if (response.status === 200) {
@@ -44,9 +44,9 @@ export const useBrowseMenuStore = create<BrowseMenuStore>((set)=>({
                 set({ browseMenus: categorizedMenus,  isFetching: false });
             } else {
                 set({ errorMsg: response.data.message, isFetching: false });
-            }        }
-        catch (error){
-            throw error;
+            } }
+        catch (e:unknown){
+            set({errorMsg: (e as Error).message,isFetching:false, })
 
         }
 

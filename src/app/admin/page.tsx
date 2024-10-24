@@ -3,6 +3,7 @@ import React from 'react'
 import Container from '../Component/Container';
 import { FaBox, FaPlus, FaShoppingCart, FaUser } from 'react-icons/fa';
 import Link from 'next/link';
+import axios from 'axios';
 
 interface MenuItem{
     title: string;
@@ -39,7 +40,7 @@ const AdminPage = () => {
   return (
     <div className='py-10'>
       <Container>
-        {/* <button
+         <button
          onClick={async ()=>{
             try{
                 const response = await axios.post('/api/test/seed/menus',{numberOfMenus:100});
@@ -49,7 +50,7 @@ const AdminPage = () => {
                 console.log(error,"in seed menus route");
             }
          }}
-          >Seed Item</button> */}
+          >Seed Item</button> 
           <div  className='grid grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-8 px-12'>
             {menuItems.map((item, index) => (
                 <div key={index} className='cursor-pointer flex items-center space-x-2 p-4 bg-cardColor rounded-lg'>

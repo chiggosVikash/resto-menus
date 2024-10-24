@@ -11,10 +11,18 @@ import LoadingDialog from '@/app/Component/dialog/LoadingDialog';
 import SuccessDialog from '@/app/Component/dialog/SuccessDialog';
 
 const AddMenusPage = () => {
-  const methods = useForm();
+  const methods = useForm<IItem>({
+    defaultValues: {
+      name: '',
+      category: '',
+      section: '',
+      fullPrice: 0,
+      halfPrice: 0,
+      description: '',
+    },
+  });
 
   const { saveMenu, isSaving, isSaved, reset } = useAddMenuStore();
-
   const [selectedPortions, setSelectedPortions] = React.useState<string[]>([]);
   const [selectedImage, setSelectedImage] = React.useState<string | null>(null);
 
@@ -74,7 +82,7 @@ const AddMenusPage = () => {
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit((data) =>{
              console.log(data);
-             saveMenu(data as IItem);
+             saveMenu(data);
           })}>
             <LoadingDialog isOpen={isSaving} title="Saving Menu..."></LoadingDialog>
             <SuccessDialog open={isSaved} title="Success!" onClose={()=>{

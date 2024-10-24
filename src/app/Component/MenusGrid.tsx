@@ -1,23 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Container from "./Container";
 import MenuCard from "./MenuCard";
-import { useBrowseMenuStore, IMenu } from "../stores/BrowseMenuStore";
+import { IMenu } from "../stores/BrowseMenuStore";
 import { IItem } from "../models/Item";
 
 
-const MenusGrid = () => {
-  const { isFetching, getCategorizedMenu, browseMenus } = useBrowseMenuStore();
-
-  useEffect(() => {
-    getCategorizedMenu();
-  }, [getCategorizedMenu]);
-
-  if (isFetching) {
-    return <div>Loading...</div>;
-  }
+const MenusGrid = ({browseMenus}:{browseMenus:IMenu[]}) => {
+ 
   return (
     <Container>
-      {browseMenus.map((browse: IMenu, index: number) => {
+      {browseMenus.length>0?browseMenus.map((browse: IMenu, index: number) => {
         return (
           <div key={index}>
             <h1 className="text-5xl  text-center my-8">{browse.category}</h1>
@@ -28,7 +20,8 @@ const MenusGrid = () => {
             </div>
           </div>
         );
-      })}
+      }):<div>Menus not Available.</div>}
+
     </Container>
   );
 };

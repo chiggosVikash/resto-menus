@@ -1,13 +1,7 @@
-import type { Metadata } from "next";
 import { Philosopher } from "next/font/google";
 import "./globals.css";
 import ClientNavbar from './Component/Navbar/ClientNavbar'
 
-
-export const metadata: Metadata = {
-  title: "Resto-Menus",
-  description: "Resto-Menus - Menus for Restaurants",
-};
 
 const philosopher = Philosopher({
   subsets: ['latin'],
@@ -30,3 +24,6 @@ export default function AppLayout({
     </html>
   );
 }
+
+
+

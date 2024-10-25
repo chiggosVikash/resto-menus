@@ -28,13 +28,10 @@ function generateRandomItem(): SeedItem {
 
 export async function seedMenus() {
   try {
-    console.log("in seedMenus");
     await dbConnect();
 
     const item = generateRandomItem();
-    console.log("item",item);
     await ItemModel.create(item);
-    console.log("Successfully seeded menu item");
   } catch (error) {
     console.error("Error seeding menu:", error);
     throw error; // Rethrow the error to be caught in the route handler

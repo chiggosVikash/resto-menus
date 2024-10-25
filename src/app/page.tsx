@@ -11,7 +11,6 @@ const Home = () => {
   const { isFetching,  browseMenus,getCategorizedMenu } = useBrowseMenuStore();
   const [hasEffectRun, setHasEffectRun] = useState(false);
 
-  console.log("Home called with value of effect",hasEffectRun)
 
   useEffect(() => {
     if (!hasEffectRun) {

@@ -3,7 +3,7 @@ import { getBrowseMenus } from "../controller";
 
 export async function GET(req:NextRequest){
    try{
-      console.log("request sending to browse")
+      console.log("request received")
       new URL(req.url)
       const browseMenus = await getBrowseMenus();
       console.log("browseMenus")

@@ -3,7 +3,6 @@ import { getItemsCount } from "../controller";
 
 export async function GET(req:NextRequest){
     try{
-      console.log("Request received")
       new URL(req.url)
       const count = await getItemsCount()
       return Response.json({"itemCount":count},{status:200})

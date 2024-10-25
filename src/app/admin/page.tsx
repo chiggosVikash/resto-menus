@@ -67,3 +67,27 @@ const AdminPage = () => {
 }
 
 export default AdminPage
+
+
+/*
+import "../globals.css";
+import Navbar from "../Component/Navbar/Navbar";
+
+export default function AdminLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body
+        
+      >
+        <Navbar />
+        {children}
+      </body>
+    </html>
+  );
+}
+
+*/

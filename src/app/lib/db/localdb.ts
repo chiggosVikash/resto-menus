@@ -65,7 +65,6 @@ export async function deleteBucketItems(itemId: string): Promise<number> {
                 console.log("item Id", cursor?.value.id);
                 // Check if the current record's id matches the itemId
                 if (cursor.value.itemId === itemId) {
-                    console.log("Deleting item with id:", cursor.value.id);
                     cursor.delete(); // Delete the current record
                     itemDeleted = true; // Set the flag to true
                 }

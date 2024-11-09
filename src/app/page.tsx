@@ -5,7 +5,7 @@ import ImageHeader from "./Component/ImageHeader";
 import { motion } from "framer-motion";
 import MenusGrid from "./Component/MenusGrid";
 import {useBrowseMenuStore} from "@/app/stores/BrowseMenuStore"
-// import Image from 'next/image';
+import Loader from '@/app/Component/Loader';
 
 const Home = () => {
   const { isFetching,  browseMenus,getCategorizedMenu } = useBrowseMenuStore();
@@ -23,7 +23,7 @@ const Home = () => {
   },[hasEffectRun,getCategorizedMenu]);
 
   if (isFetching) {
-    return <div>Loading...</div>;
+    return <Loader/>
   }
 
 

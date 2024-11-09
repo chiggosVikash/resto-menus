@@ -11,6 +11,7 @@ interface BucketStore{
      addMenuToBucket:(item:IItem) => Promise<void>,
      fetchMenus:() => Promise<void>,
      removeMenuItem:(itemId:string) => Promise<void>,
+     isItemAdded:(name:string)=> boolean
 }
 
 export const useBucketStore = create<BucketStore>((set ,get)=> ({
@@ -19,6 +20,10 @@ export const useBucketStore = create<BucketStore>((set ,get)=> ({
     deleting:false,
     isItemDeleted:false,
     errorMessage:undefined,
+    isItemAdded: (name: string) => {
+        // Check if the item with the given name exists in bucketMenus
+        return get().bucketMenus.some(item => item.name === name);
+    },
     addMenuToBucket: async (item) => {
         set({processing:true})
         try{
@@ -53,7 +58,7 @@ export const useBucketStore = create<BucketStore>((set ,get)=> ({
                 set((state) => ({ 
                     deleting:false, 
                     isItemDeleted:true,
-                    // bucketMenus: state.bucketMenus.filter(item => item.id !== itemId) 
+                    bucketMenus: state.bucketMenus.filter(item => item.id !== itemId) 
                 }));
                 fetchMenus()
             }

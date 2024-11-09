@@ -4,8 +4,9 @@ import Container from '../Component/Container';
 import { FaBox, FaPlus, FaShoppingCart, FaUser } from 'react-icons/fa';
 import Link from 'next/link';
 import axios from 'axios';
+import Menubar  from '../Component/Navbar/Menubar';
 
-interface MenuItem{
+interface MenuItem {
     title: string;
     icon: React.ReactNode;
     href: string;
@@ -38,8 +39,9 @@ const menuItems: MenuItem[] = [
 
 const AdminPage = () => {
   return (
-    <div className='py-10'>
-      <Container>
+    <div >
+      <Menubar />
+      <Container className='py-10'>
          <button
          onClick={async ()=>{
             try{

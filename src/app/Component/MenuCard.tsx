@@ -1,18 +1,15 @@
-// src/app/Component/MenusGrid.tsx
-
 import React, { useState } from 'react';
 import Image from 'next/image'; 
 import FoodImage from '../assets/food-image.jpg';
 import { FaChevronDown, FaChevronUp, FaStar } from 'react-icons/fa'; // Importing arrow and star icons
 import { IItem } from '../models/Item';
 import { useBucketStore } from "../stores/bucketStore";
+import toast from 'react-hot-toast';
 
-
-
-
+const notify = () => toast.success('Added to Bag', { position: 'bottom-right' });
 
 const MenuCard = ({menus: item}:{menus: IItem}) => {
-    const { addMenuToBucket } = useBucketStore();
+    const { addMenuToBucket, isItemAdded } = useBucketStore();
 
     const [isExpanded, setIsExpanded] = useState(false);
     const toggleDescription = () => setIsExpanded(!isExpanded);
@@ -31,8 +28,11 @@ const MenuCard = ({menus: item}:{menus: IItem}) => {
                 <button 
                    onClick={()=>{
                       addMenuToBucket(item)
+                      notify()
+                      
                    }}
-                    className="bg-primary text-white py-2 px-4 rounded-lg shadow hover:bg-secondary transition duration-300">Add to Bag</button> {/* Add to Bag button */}
+                    className="bg-primary text-white py-2 px-4 rounded-lg shadow hover:bg-secondary transition duration-300">
+                    {isItemAdded(item.name) ? 'Added' : 'Add to Bag'}</button> {/* Add to Bag button */}
                 <div className="flex items-center">
                     <span className="text-yellow-500 text-2xl">
                         <FaStar /> {/* Rating icon here */}

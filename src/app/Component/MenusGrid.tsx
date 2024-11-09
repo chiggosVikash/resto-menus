@@ -3,12 +3,14 @@ import Container from "./Container";
 import MenuCard from "./MenuCard";
 import { IMenu } from "../stores/BrowseMenuStore";
 import { IItem } from "../models/Item";
+// import Loader from '../Component/Loader'
 
 
 const MenusGrid = ({browseMenus}:{browseMenus:IMenu[]}) => {
  
   return (
     <Container>
+     {/* <Loader /> */}
       {browseMenus.length>0?browseMenus.map((browse: IMenu, index: number) => {
         return (
           <div key={index}>

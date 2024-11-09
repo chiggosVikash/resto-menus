@@ -7,7 +7,7 @@ import Logo from '../../assets/food-logo.png';
 import {  FaUserCircle, FaBars, FaTimes } from 'react-icons/fa';
 import { IoMdLogOut } from "react-icons/io";
 import { Merienda } from 'next/font/google';
-import Menubar from './Menubar'
+// import Menubar from './Menubar'
 
 const merienda = Merienda({
   subsets: ['latin'],
@@ -60,7 +60,7 @@ const Navbar = () => {
           </div>
         </Container>
       </nav>
-      <Menubar />
+      {/* <Menubar /> */}
       </div>
       {isScrolled && <div className="h-[64px]" />} {/* Placeholder to prevent content jump */}
     </div>

@@ -15,7 +15,6 @@ const ImageUploadSection = () => {
   return (
     <div className="w-full md:w-1/3">
                 <div className="mb-4">
-                  <label className="block mb-2 text-sm font-medium">Food Image</label>
                   <div className="border-2 border-dashed border-secondary rounded-md p-4 text-center">
                     <input
                       type="file"

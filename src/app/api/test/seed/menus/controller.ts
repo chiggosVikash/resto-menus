@@ -20,7 +20,7 @@ function generateRandomItem(): SeedItem {
     description:  `A delicious test item for your enjoyment`,
     halfPrice: Number((Math.random() * 10 + 2).toFixed(2)),
     fullPrice: Number((Math.random() * 20 + 5).toFixed(2)),
-    image: `image${Math.floor(Math.random() * 10)}.jpg`,
+    image: ``,
     category: categories[Math.floor(Math.random() * categories.length)],
     section: sections[Math.floor(Math.random() * sections.length)],
   };

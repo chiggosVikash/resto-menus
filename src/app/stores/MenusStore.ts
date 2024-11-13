@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { IItem } from "../models/Item";
 import { IGetMenusOptions } from "../api/menus/controller";
 import axios from "axios";
-
+import { menusRoute } from "../../shared/endpoints";
 
 interface MenusStore{
     isFetching: boolean;
@@ -17,11 +17,11 @@ export const useMenusStore = create<MenusStore>((set) => ({
     errorMessage: "",
     isFetched: false,
     menus: [],
-     getMenus: async (options: IGetMenusOptions) => {
+    getMenus: async (options: IGetMenusOptions) => {
         set({isFetching: true});
 
         try{
-            const response = await axios.get("/api/menus",{
+            const response = await axios.get(menusRoute,{
                 params: options
             });
             

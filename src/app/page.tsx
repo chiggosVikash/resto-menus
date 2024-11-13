@@ -17,9 +17,9 @@ const Home = () => {
       setHasEffectRun(true);
       getCategorizedMenu()
     }
-    return function (){
-      console.log("Clean up called")
-    }
+    // return function (){
+    //   console.log("Clean up called")
+    // }
   },[hasEffectRun,getCategorizedMenu]);
 
   if (isFetching) {

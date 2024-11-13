@@ -8,6 +8,7 @@ export interface IItem extends Document{
     halfPrice: number;
     fullPrice: number;
     image: string | null;
+    
     category: string;
     section: string;
     createdAt: Date;

@@ -25,7 +25,7 @@ const AddToBag = () => {
 
   // Destructure state from the order store
   const { isPersonalInfoFormOpen } = useOrderStore();
-  
+
   // Fetch menus when the component mounts
   useEffect(() => {
     fetchMenus();
@@ -51,7 +51,7 @@ const AddToBag = () => {
       <ImageHeader title={"In your Bucket"} subtitle="" />
       <div className="relative max-w-7xl mx-auto md:p-4 font-sans px-4 sm:px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12">
-          {bucketMenus.map((item: IItem,index:number) => {
+          {bucketMenus.map((item: IItem, index: number) => {
             return (
               <div key={item.name} className="relative">
                 <button
@@ -99,7 +99,7 @@ const AddToBag = () => {
                         </p>
 
                         {/* Quantity Selector */}
-                        <QuantityButton menuId={`${index+1}`}/>
+                        <QuantityButton menuId={`${index + 1}`} />
                       </div>
                     </div>
                   </div>
@@ -110,7 +110,7 @@ const AddToBag = () => {
 
           <div>
             {/* Order Summary */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-6 md:mb-20">
               <h3 className="font-bold text-lg mb-4">ORDER SUMMARY</h3>
               <div className="space-y-2">
                 <div className="flex justify-between">

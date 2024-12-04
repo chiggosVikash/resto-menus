@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { FormProvider, useForm, SubmitHandler } from "react-hook-form";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import Image from "next/image";
+import Link from "next/link";
 
 const defaultImageUrl = "https://png.pngtree.com/png-clipart/20220903/ourmid/pngtree-chef-restaurant-logo-png-image_6136204.png"; // Path to the default image in your public folder
 
@@ -66,9 +67,9 @@ const HomePage: React.FC = () => {
   ];
 
   return (
-    <div className="w-full h-full flex bg-gray-100">
+    <div className="w-full h-full flex flex-col md:flex-row bg-gray-100">
       {/* Left Section - Text Content with Diagonal Split Background */}
-      <div className="flex flex-col justify-center w-1/2 bg-gradient-to-br from-pink-500 to-yellow-400 text-white p-8">
+      <div className="flex-col justify-center w-1/2 bg-gradient-to-br from-pink-500 to-yellow-400 text-white p-8 hidden md:block">
         <div className="max-w-md mx-auto">
           <div className="flex items-center space-x-2">
             <div className="w-6 h-6 bg-red-600 rounded-full"></div>
@@ -82,14 +83,17 @@ const HomePage: React.FC = () => {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore.
           </p>
-          <button className="mt-6 px-6 py-3 bg-orange-600 text-white rounded-full flex items-center gap-2 hover:bg-orange-500 transition font-semibold">
-            Order Now <AiOutlineArrowRight />
-          </button>
+          {/* Updated Button */}
+          <Link href="/admin/signin"> {/* Route to the Sign In page */}
+            <button className="mt-6 px-6 py-3 bg-orange-600 text-white rounded-full flex items-center gap-2 hover:bg-orange-500 transition font-semibold">
+              Sign In <AiOutlineArrowRight />
+            </button>
+          </Link>
         </div>
       </div>
 
       {/* Right Section - Signup Form */}
-      <div className="flex items-center justify-center w-1/2 bg-white">
+      <div className="flex items-center justify-center md:w-1/2 bg-white">
         <div className="w-full max-w-lg p-8 space-y-6">
           <FormProvider {...methods}>
             <form
@@ -134,55 +138,52 @@ const HomePage: React.FC = () => {
                   onChange={handleImageChange}
                 />
               </div>
-              <div className="flex space-x-4">
-                <div className="flex-1">
-                  <label className="block mb-2 text-sm font-medium">
-                    Owner Name
-                  </label>
-                  <input
-                    name="ownerName"
-                    placeholder="Owner Name"
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-                  />
-                </div>
-                <div className="flex-1">
-                  <label className="block mb-2 text-sm font-medium">
-                    Mobile No
-                  </label>
-                  <input
-                    name="mobileNo"
-                    placeholder="Mobile No"
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-                  />
-                </div>
+
+              <div className="flex-1">
+                <label className="block mb-2 text-sm font-medium">
+                  Owner Name
+                </label>
+                <input
+                  name="ownerName"
+                  placeholder="Owner Name"
+                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="block mb-2 text-sm font-medium">
+                  Mobile No
+                </label>
+                <input
+                  name="mobileNo"
+                  placeholder="Mobile No"
+                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                />
               </div>
 
-              <div className="flex space-x-4">
-                <div className="flex-1">
-                  <label className="block mb-2 text-sm font-medium">
-                    Outlet Name
-                  </label>
-                  <input
-                    name="outletName"
-                    placeholder="Outlet Name"
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-                  />
-                </div>
-                <div className="flex-1">
-                  <label className="block mb-2 text-sm font-medium">
-                    Outlet Type
-                  </label>
-                  <select
-                    name="outletType"
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-                  >
-                    {outletTypeOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              <div className="flex-1">
+                <label className="block mb-2 text-sm font-medium">
+                  Outlet Name
+                </label>
+                <input
+                  name="outletName"
+                  placeholder="Outlet Name"
+                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="block mb-2 text-sm font-medium">
+                  Outlet Type
+                </label>
+                <select
+                  name="outletType"
+                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                >
+                  {outletTypeOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <label className="block mb-2 text-sm font-medium">Email</label>
@@ -200,29 +201,28 @@ const HomePage: React.FC = () => {
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
               />
 
-<div className="flex space-x-4">
-<div className="flex-1">
-              <label className="block mb-2 text-sm font-medium">Password</label>
-              <input
-                name="password"
-                type="password"
-                placeholder="Password"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-              />
+              <div className="flex-1">
+                <label className="block mb-2 text-sm font-medium">Password</label>
+                <input
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                />
               </div>
 
-<div className="flex-1">
-              <label className="block mb-2 text-sm font-medium">
-                Confirm Password
-              </label>
-              <input
-                name="confirmPassword"
-                type="password"
-                placeholder="Confirm Password"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-              />
-</div>
-</div>
+              <div className="flex-1">
+                <label className="block mb-2 text-sm font-medium">
+                  Confirm Password
+                </label>
+                <input
+                  name="confirmPassword"
+                  type="password"
+                  placeholder="Confirm Password"
+                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
               <button
                 type="submit"
                 className="w-full py-3 bg-gradient-to-br from-pink-500 to-orange-400 text-white font-semibold rounded-lg hover:bg-yellow-600 transition"

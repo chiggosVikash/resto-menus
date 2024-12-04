@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import Container from '../../Component/Container';
@@ -19,6 +19,7 @@ const AddMenusPage = () => {
       fullPrice: 0,
       halfPrice: 0,
       description: '',
+      type: '', // Add type field for Veg/Non-Veg
     },
   });
 
@@ -44,51 +45,88 @@ const AddMenusPage = () => {
 
   const handlePortionChange = (portion: string) => {
     if (portion === 'both') {
-      setSelectedPortions(prev => 
+      setSelectedPortions((prev) =>
         prev.includes('both') ? [] : ['full', 'half', 'both']
       );
     } else {
-      setSelectedPortions(prev => {
+      setSelectedPortions((prev) => {
         const newPortions = prev.includes(portion)
-          ? prev.filter(p => p !== portion)
+          ? prev.filter((p) => p !== portion)
           : [...prev, portion];
-        
+
         if (newPortions.includes('full') && newPortions.includes('half')) {
           return ['full', 'half', 'both'];
         } else {
-          return newPortions.filter(p => p !== 'both');
+          return newPortions.filter((p) => p !== 'both');
         }
       });
     }
   };
 
-  const visiblePriceInputs = selectedPortions.includes('both') 
-    ? ['full', 'half'] 
-    : selectedPortions.filter(p => p !== 'both');
-
-  
+  const visiblePriceInputs = selectedPortions.includes('both')
+    ? ['full', 'half']
+    : selectedPortions.filter((p) => p !== 'both');
 
   return (
-    <div className="bg-surface text-onSurface">
+    <div className="bg-surface text-onSurface min-h-screen mb-4">
       <Container>
         <h1 className="text-3xl font-bold mb-6 text-primary">Add Menu Item</h1>
         <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit((data) =>{
-             console.log(data);
-             saveMenu(data);
-          })}>
+          <form
+            onSubmit={methods.handleSubmit((data) => {
+              console.log(data);
+              saveMenu(data);
+            })}
+          >
             <LoadingDialog isOpen={isSaving} title="Saving Menu..."></LoadingDialog>
-            <SuccessDialog open={isSaved} title="Success!" onClose={()=>{
-              reset();
-              methods.reset();
-            }} message="Menu has been saved successfully."></SuccessDialog>
-            
+            <SuccessDialog
+              open={isSaved}
+              title="Success!"
+              onClose={() => {
+                reset();
+                methods.reset();
+              }}
+              message="Menu has been saved successfully."
+            ></SuccessDialog>
+
             <div className="flex flex-col md:flex-row gap-6">
               {/* Left section for image upload */}
-              <ImageUploadSection/>
+              <ImageUploadSection />
               {/* Right section for menu details */}
               <div className="w-full md:w-2/3">
-                <Input name="name" label="Item Name" rules={{ required: 'Item name is required' }} />
+                <Input
+                  name="name"
+                  label="Item Name"
+                  rules={{ required: 'Item name is required' }}
+                />
+
+                {/* Veg/Non-Veg Option with Radio Buttons */}
+                <div className="mb-4">
+                  <label className="block mb-2 text-sm font-medium">Type</label>
+                  <div className="flex gap-4">
+                    <label className="inline-flex items-center">
+                      <input
+                        type="radio"
+                        name="type"
+                        value="veg"
+                        {...methods.register('type', { required: 'Item type is required' })}
+                        className="form-radio text-primary"
+                      />
+                      <span className="ml-2 capitalize">Veg</span>
+                    </label>
+                    <label className="inline-flex items-center">
+                      <input
+                        type="radio"
+                        name="type"
+                        value="non-veg"
+                        {...methods.register('type', { required: 'Item type is required' })}
+                        className="form-radio text-primary"
+                      />
+                      <span className="ml-2 capitalize">Non-Veg</span>
+                    </label>
+                  </div>
+                </div>
+
                 <div className="mb-4">
                   <label className="block mb-2 text-sm font-medium">Category</label>
                   <Select
@@ -110,8 +148,8 @@ const AddMenusPage = () => {
 
                 <div className="mb-4">
                   <label className="block mb-2 text-sm font-medium">Portion Type</label>
-                  <div className="flex gap-4">
-                    {portionOptions.map(portion => (
+                  <div className="flex flex-wrap gap-4">
+                    {portionOptions.map((portion) => (
                       <label key={portion} className="inline-flex items-center">
                         <input
                           type="checkbox"
@@ -124,8 +162,8 @@ const AddMenusPage = () => {
                     ))}
                   </div>
                 </div>
-                
-                {visiblePriceInputs.map(portion => (
+
+                {visiblePriceInputs.map((portion) => (
                   <Input
                     key={portion}
                     name={`${portion}Price`}
@@ -135,11 +173,15 @@ const AddMenusPage = () => {
                   />
                 ))}
 
-                <Input name="description" label="Description" rules={{ required: 'Description is required' }} />
+                <Input
+                  name="description"
+                  label="Description"
+                  rules={{ required: 'Description is required' }}
+                />
 
                 <button
                   type="submit"
-                  className="mt-4 bg-primary text-onPrimary px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors"
+                  className="mt-4 bg-primary text-onPrimary px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors w-full md:w-auto"
                 >
                   Add Menu Item
                 </button>
